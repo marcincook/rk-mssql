@@ -11,9 +11,9 @@ DECLARE @responseObj INT;
 DECLARE @jsonResponse AS TABLE(Json_Table NVARCHAR(MAX))
 
 -- Set Authentications
-SET @apiToken = 'Bearer '+(SELECT api_token FROM users WHERE id = 1);
+SET @apiToken = 'Bearer '+(SELECT TOP 1 api_token FROM users WHERE is_active = 1);
 SET @contentType = 'application/json';
-SET @apiUrl = (SELECT api_url FROM users WHERE id = 1) +'/api/partner/products' ;
+SET @apiUrl = (SELECT TOP 1 api_url FROM users WHERE is_active = 1) +'/api/partner/products' ;
 
 
 ---- This creates the new object.S
