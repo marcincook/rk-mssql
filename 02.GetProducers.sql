@@ -12,7 +12,7 @@ DECLARE @jsonResponse AS TABLE(Json_Table NVARCHAR(MAX))
 -- Set Authentications
 SET @apiToken = 'Bearer '+(SELECT api_token FROM users WHERE id = 1);
 SET @contentType = 'application/json';
-SET @apiUrl = (SELECT api_url FROM users WHERE id = 1) +'/api/partner/categories' ;
+SET @apiUrl = (SELECT api_url FROM users WHERE id = 1) +'/api/partner/producers' ;
 
 
 ---- This creates the new object.S
@@ -30,24 +30,22 @@ INSERT into @jsonResponse (Json_Table) EXEC sp_OAGetProperty @requestObj, 'respo
 -- SELECT * FROM @jsonResponse
 -- SELECT * FROM OPENJSON((SELECT * FROM @jsonResponse)) WITH ( id BIGINT, name VARCHAR(MAX), category_id BIGINT  )
 
- DELETE FROM categories WHERE 1=1;
+ DELETE FROM producers WHERE 1=1;
 
 
- INSERT INTO categories (id,name,category_id,is_active)
+ INSERT INTO producers (id,name,is_active)
  (SELECT
 		id,
 		name,
-		category_id,
 		is_active
 	FROM OPENJSON((SELECT * FROM @jsonResponse))
 	WITH (
 		id BIGINT ,
 		name VARCHAR(MAX) ,
-		category_id BIGINT,
 		is_active BIT
 		)
 	)
 
 -- DEBUG --------------------------------
-SELECT * FROM categories
+SELECT * FROM producers
 
